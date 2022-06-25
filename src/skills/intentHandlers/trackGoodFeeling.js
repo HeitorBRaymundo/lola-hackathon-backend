@@ -1,20 +1,35 @@
 import * as Alexa from 'ask-sdk-core';
 
-import { getTextFromDB } from '../infrastructure/intentTextDB.js';
+import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
+import { randomInteger } from '../../utils/utils.js';
 
 export const TrackGoodFeelingHandler = {
   canHandle(handlerInput) {
       return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-          && Alexa.getIntentName(handlerInput.requestEnvelope) === 'TrackgGoodFeeling';
+          && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GoodFeelingIntent';
   },
   async handle(handlerInput) {
-    const speakOutput = await getTextFromDB('TrackGoodFeeling');;
+    const randomIndex = randomInteger(0, 1);
+    const exerciseQuestion = await getTextFromDB('Exercicio');
+    const helpMeQuestion = await getTextFromDB('Menu Ajuda');
+    const randomSpeak = [
+      exerciseQuestion,
+      helpMeQuestion,
+    ];
+
+    const speakOutput = randomSpeak[randomIndex];
+
+    const customAttributes = {
+      exercisedAsked: speakOutput === exerciseQuestion,
+    };
 
     return new Promise((resolve, reject) => {
       handlerInput.attributesManager.getPersistentAttributes()
         .then((attributes) => {
-          attributes.exercisedAsked = true;
-          handlerInput.attributesManager.setPersistentAttributes(attributes);
+          handlerInput.attributesManager.setPersistentAttributes({
+            ...attributes,
+            ...customAttributes,
+          });
 
           return handlerInput.attributesManager.savePersistentAttributes();
         })

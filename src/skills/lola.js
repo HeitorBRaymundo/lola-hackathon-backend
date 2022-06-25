@@ -16,8 +16,8 @@ import {
   TrackBadFeelingHandler,
   TrackGoodFeelingHandler,
   TrackYesAnswerToExerciseHandler,
-  TrackAnsweredExerciseDetailsHandler,
-} from '../intentHandlers/index.js';
+  TrackNoAnswerToExerciseHandler,
+} from './intentHandlers/index.js';
 import { getTextFromDB } from '../infrastructure/intentTextDB.js';
 
 const LaunchRequestHandler = {
@@ -25,7 +25,7 @@ const LaunchRequestHandler = {
       return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     async handle(handlerInput) {
-      const speakOutput = await getTextFromDB('LaunchText');
+      const speakOutput = await getTextFromDB('Saudacao');
 
       return handlerInput.responseBuilder
           .speak(speakOutput)
@@ -45,7 +45,7 @@ export const handler = Alexa.SkillBuilders.custom()
         LaunchRequestHandler,
         TrackGoodFeelingHandler,
         TrackYesAnswerToExerciseHandler,
-        TrackAnsweredExerciseDetailsHandler,
+        TrackNoAnswerToExerciseHandler,
         TrackBadFeelingHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,

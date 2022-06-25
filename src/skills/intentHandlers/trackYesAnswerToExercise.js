@@ -1,10 +1,10 @@
 import * as Alexa from 'ask-sdk-core';
 
-import { getTextFromDB } from '../infrastructure/intentTextDB.js';
+import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
 
 export const TrackYesAnswerToExerciseHandler = {
   canHandle(handlerInput) {
-    const anwseredYes = new Promise((resolve, reject) => {
+    const exercisedAsked = new Promise((resolve, reject) => {
       handlerInput.attributesManager.getPersistentAttributes()
         .then((attributes) => {
           resolve(attributes.exercisedAsked);
@@ -15,11 +15,11 @@ export const TrackYesAnswerToExerciseHandler = {
     })
 
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'YesAnswerToExercise'
-      && anwseredYes;
+      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'YesIntent'
+      && exercisedAsked;
   },
   async handle(handlerInput) {
-    const speakOutput = await getTextFromDB('TrackYesAnswerToExercise');
+    const speakOutput = await getTextFromDB('ok');
 
     return new Promise((resolve, reject) => {
       handlerInput.attributesManager.getPersistentAttributes()

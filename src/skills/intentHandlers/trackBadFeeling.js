@@ -1,6 +1,6 @@
 import * as Alexa from 'ask-sdk-core';
 
-import { getTextFromDB } from '../infrastructure/intentTextDB.js';
+import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
 
 export const TrackBadFeelingHandler = {
   canHandle(handlerInput) {

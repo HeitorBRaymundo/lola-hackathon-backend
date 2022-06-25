@@ -9,4 +9,4 @@ export {
 export { TrackGoodFeelingHandler } from './trackGoodFeeling.js';
 export { TrackBadFeelingHandler } from './trackBadFeeling.js';
 export { TrackYesAnswerToExerciseHandler } from './trackYesAnswerToExercise.js';
-export { TrackAnsweredExerciseDetailsHandler } from './trackAnsweredExerciseDetails.js';
+export { TrackNoAnswerToExerciseHandler } from './trackNoAnswerToExercise.js';
