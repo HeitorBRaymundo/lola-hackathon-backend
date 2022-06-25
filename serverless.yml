@@ -12,6 +12,7 @@ provider:
       DYNAMODB_QUIZES: quizes
       DYNAMODB_QUIZES_ANSWER: quizes-answer
       DYNAMODB_REMINDERS: reminders
+      DYNAMODB_SCHEDULES: schedules
 
   iam:
     role:
@@ -114,6 +115,17 @@ resources:
           - AttributeName: SK
             KeyType: RANGE
         TableName: reminders
+    Schedules:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+        TableName: schedules
 
 functions:
   get:

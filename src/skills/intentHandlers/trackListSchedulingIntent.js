@@ -1,6 +1,7 @@
 import * as Alexa from 'ask-sdk-core';
 
 import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
+import { getSchedulesFromDB } from '../../infrastructure/schedulesDB.js';
 
 export const TrackListSchedulingIntent = {
   canHandle(handlerInput) {
@@ -10,12 +11,10 @@ export const TrackListSchedulingIntent = {
   async handle(handlerInput) {
     const speakOutputInit = await getTextFromDB('Agenda');
 
-    const schedulesToday = [
-      'Médico cardiologista',
-      'Tomar remédio',
-    ];
+    const appointments = await getSchedulesFromDB('appointments');
+    const appointmentsName = appointments.map((a) => a.name);
 
-    const speakOutput = `${speakOutputInit}: ${schedulesToday.join(' e ')}`;
+    const speakOutput = `${speakOutputInit}: ${appointmentsName.join(', e ')}`;
 
     return handlerInput.responseBuilder
       .speak(speakOutput)
