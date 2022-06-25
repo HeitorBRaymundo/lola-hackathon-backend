@@ -1,0 +1,174 @@
+service: lola
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+  environment:
+      DYNAMODB_USERS: lola-users
+      DYNAMODB_ALEXA_TEXT: alexa-intent-text
+      DYNAMODB_EMERGENCY_CONTACT: emergency-contacts
+      DYNAMODB_QUIZES: quizes
+      DYNAMODB_QUIZES_ANSWER: quizes-answer
+      DYNAMODB_REMINDERS: reminders
+
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'dynamodb:*'
+          Resource: arn:aws:dynamodb:*
+        - Effect: 'Allow'
+          Action:
+            - 's3:*'
+          Resource: arn:aws:s3:::alexa-skills-persistence
+
+
+resources:
+  Resources:
+    Users:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        TableName: lola-users
+    AlexaIntentText:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+        TableName: alexa-intent-text
+    EmergencyContacts:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        TableName: emergency-contacts
+    Quizes:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        TableName: quizes
+    QuizesAnswer:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        TableName: quizes-answer
+    Reminders:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        TableName: reminders
+
+functions:
+  get:
+    handler: src/interface/get.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
+  
+  createEmergencyContact:
+    handler: src/components/emergency-contact/create.handler
+    events:
+      - httpApi:
+          path: /emergency-contact/{userId}
+          method: post
+
+  listEmergencyContacts:
+    handler: src/components/emergency-contact/listByUser.handler
+    events:
+      - httpApi:
+          path: /emergency-contact/{userId}
+          method: get
+
+  createReminder:
+    handler: src/components/reminders/create.handler
+    events:
+      - httpApi:
+          path: /reminder/{userId}
+          method: post
+
+  listReminders:
+    handler: src/components/reminders/listByUser.handler
+    events:
+      - httpApi:
+          path: /reminder/{userId}
+          method: get
+
+  listQuizes:
+    handler: src/components/quizes/listQuizes.handler
+    events:
+      - httpApi:
+          path: /quizes/{type}
+          method: get
+
+  answerQuiz:
+    handler: src/components/quizes/answerQuiz.handler
+    events:
+      - httpApi:
+          path: /quizes/{userId}/answer
+          method: post
+
+  mySkill:
+    handler: src/skills/lola.handler
+    events:
+      - alexaSkill:
+          appId: amzn1.ask.skill.2bf843c5-38a1-437d-96be-70540b65d77b
+  	
+ 
