@@ -2,29 +2,21 @@ import * as Alexa from 'ask-sdk-core';
 
 import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
 
-export const TrackAnsweredExerciseDetailsHandler = {
+export const TrackScheduleIntent = {
   canHandle(handlerInput) {
-    const askedDetailsAboutExercises = new Promise((resolve, reject) => {
-      handlerInput.attributesManager.getPersistentAttributes()
-        .then((attributes) => {
-          resolve(attributes.exerciseDetailsAsked);
-        })
-        .catch((error) => {
-          reject(error);
-        })
-    })
-
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      && askedDetailsAboutExercises;
+      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ScheduleIntent';
   },
   async handle(handlerInput) {
-    const speakOutput = await getTextFromDB('TrackAnsweredExerciseDetails');
+    const speakOutput = await getTextFromDB('especialidade');
 
     return new Promise((resolve, reject) => {
       handlerInput.attributesManager.getPersistentAttributes()
         .then((attributes) => {
-          attributes.exerciseDetailsAnswered = true;
-          handlerInput.attributesManager.setPersistentAttributes(attributes);
+          handlerInput.attributesManager.setPersistentAttributes({
+            ...attributes,
+            askedSpecialist: true
+          });
 
           return handlerInput.attributesManager.savePersistentAttributes();
         })
@@ -32,6 +24,7 @@ export const TrackAnsweredExerciseDetailsHandler = {
           resolve(
             handlerInput.responseBuilder
               .speak(speakOutput)
+              .reprompt(speakOutput)
               .getResponse()
           );
         })

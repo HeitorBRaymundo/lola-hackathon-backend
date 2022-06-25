@@ -3,20 +3,12 @@ import * as Alexa from 'ask-sdk-core';
 import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
 
 export const TrackYesAnswerToExerciseHandler = {
-  canHandle(handlerInput) {
-    const exercisedAsked = new Promise((resolve, reject) => {
-      handlerInput.attributesManager.getPersistentAttributes()
-        .then((attributes) => {
-          resolve(attributes.exercisedAsked);
-        })
-        .catch((error) => {
-          reject(error);
-        })
-    })
+  async canHandle(handlerInput) {
+    const { exerciseAsked } = await handlerInput.attributesManager.getPersistentAttributes();
 
-    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+    return exerciseAsked 
+      && Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
       && Alexa.getIntentName(handlerInput.requestEnvelope) === 'YesIntent'
-      && exercisedAsked;
   },
   async handle(handlerInput) {
     const speakOutput = await getTextFromDB('ok');
@@ -24,9 +16,10 @@ export const TrackYesAnswerToExerciseHandler = {
     return new Promise((resolve, reject) => {
       handlerInput.attributesManager.getPersistentAttributes()
         .then((attributes) => {
-          attributes.exercisedAnswered = true;
-          attributes.exerciseDetailsAsked = true;
-          handlerInput.attributesManager.setPersistentAttributes(attributes);
+          handlerInput.attributesManager.setPersistentAttributes({
+            ...attributes,
+            exerciseAsked: false,
+          });
 
           return handlerInput.attributesManager.savePersistentAttributes();
         })

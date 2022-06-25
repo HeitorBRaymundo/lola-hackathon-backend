@@ -4,9 +4,15 @@ import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
 import { randomInteger } from '../../utils/utils.js';
 
 export const TrackGoodFeelingHandler = {
-  canHandle(handlerInput) {
-      return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-          && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GoodFeelingIntent';
+  async canHandle(handlerInput) {
+    const { firstIteraction } = await handlerInput.attributesManager.getPersistentAttributes();
+    
+    const canHandle = firstIteraction
+      && Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'GoodFeelingIntent'
+      || Alexa.getIntentName(handlerInput.requestEnvelope) === 'YesIntent');
+
+    return canHandle;
   },
   async handle(handlerInput) {
     const randomIndex = randomInteger(0, 1);
@@ -20,7 +26,8 @@ export const TrackGoodFeelingHandler = {
     const speakOutput = randomSpeak[randomIndex];
 
     const customAttributes = {
-      exercisedAsked: speakOutput === exerciseQuestion,
+      exerciseAsked: speakOutput === exerciseQuestion,
+      firstIteraction: false,
     };
 
     return new Promise((resolve, reject) => {

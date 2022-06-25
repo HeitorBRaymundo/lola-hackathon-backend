@@ -59,8 +59,21 @@ export const SessionEndedRequestHandler = {
   },
   handle(handlerInput) {
       console.log(`~~~~ Session ended: ${JSON.stringify(handlerInput.requestEnvelope)}`);
-      // Any cleanup logic goes here.
-      return handlerInput.responseBuilder.getResponse(); // notice we send an empty response
+
+      return new Promise((resolve, reject) => {
+        handlerInput.attributesManager.getPersistentAttributes()
+          .then(() => {
+            return handlerInput.attributesManager.deletePersistentAttributes();
+          })
+          .then(() => {
+            resolve(
+                handlerInput.responseBuilder.getResponse()
+            );
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
   }
 };
 /* *

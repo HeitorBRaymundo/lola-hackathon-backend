@@ -17,6 +17,9 @@ import {
   TrackGoodFeelingHandler,
   TrackYesAnswerToExerciseHandler,
   TrackNoAnswerToExerciseHandler,
+  TrackScheduleIntent,
+  TrackListMedicineIntent,
+  TrackListSchedulingIntent,
 } from './intentHandlers/index.js';
 import { getTextFromDB } from '../infrastructure/intentTextDB.js';
 
@@ -27,10 +30,27 @@ const LaunchRequestHandler = {
     async handle(handlerInput) {
       const speakOutput = await getTextFromDB('Saudacao');
 
-      return handlerInput.responseBuilder
-          .speak(speakOutput)
-          .reprompt(speakOutput)
-          .getResponse();
+      return new Promise((resolve, reject) => {
+        handlerInput.attributesManager.getPersistentAttributes()
+          .then(() => {
+            handlerInput.attributesManager.setPersistentAttributes({
+              firstIteraction: true,
+            });
+  
+            return handlerInput.attributesManager.savePersistentAttributes();
+          })
+          .then(() => {
+            resolve(
+              handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse()
+            );
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     }
 };
 
@@ -47,11 +67,17 @@ export const handler = Alexa.SkillBuilders.custom()
         TrackYesAnswerToExerciseHandler,
         TrackNoAnswerToExerciseHandler,
         TrackBadFeelingHandler,
+
+        TrackScheduleIntent,
+        TrackListMedicineIntent,
+        TrackListSchedulingIntent,
+
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
-        SessionEndedRequestHandler,
-        IntentReflectorHandler)
+        SessionEndedRequestHandler
+        // IntentReflectorHandler
+    )
     .addErrorHandlers(
         ErrorHandler)
     .withCustomUserAgent('sample/hello-world/v1.2')
