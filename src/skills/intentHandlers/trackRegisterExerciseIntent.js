@@ -1,14 +1,16 @@
 import * as Alexa from 'ask-sdk-core';
 
 import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
-import { putRegister } from '../../infrastructure/registerDB';
+import { putRegister } from '../../infrastructure/registerDB.js';
 
-export const TrackExerciseIntentHandler = {
+export const TrackRegisterExerciseIntentHandler = {
   canHandle(handlerInput) {
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
       && Alexa.getIntentName(handlerInput.requestEnvelope) === 'RegisterExerciseIntent';
   },
   async handle(handlerInput) {
+    console.log('TrackExerciseIntentHandler Triggered');
+
     const speakOutput = await getTextFromDB('ExerciseConfirm');
 
     await putRegister({

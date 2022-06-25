@@ -14,36 +14,26 @@ export const TrackGoodFeelingHandler = {
     return canHandle;
   },
   async handle(handlerInput) {
-    const helpMeQuestion = await getTextFromDB('Menu Ajuda');
+    console.log('TrackGoodFeelingHandler Triggered');
 
-    const speakOutput = helpMeQuestion;
+    const speakOutput = await getTextFromDB('Menu Ajuda');
 
     const customAttributes = {
-      exerciseAsked: speakOutput === exerciseQuestion,
       firstIteraction: false,
     };
 
-    return new Promise((resolve, reject) => {
-      handlerInput.attributesManager.getPersistentAttributes()
-        .then((attributes) => {
-          handlerInput.attributesManager.setPersistentAttributes({
-            ...attributes,
-            ...customAttributes,
-          });
+    const attributes = await handlerInput.attributesManager.getPersistentAttributes();
 
-          return handlerInput.attributesManager.savePersistentAttributes();
-        })
-        .then(() => {
-          resolve(
-            handlerInput.responseBuilder
-              .speak(speakOutput)
-              .reprompt(speakOutput)
-              .getResponse()
-          );
-        })
-        .catch((error) => {
-          reject(error);
-        });
+    handlerInput.attributesManager.setPersistentAttributes({
+      ...attributes,
+      ...customAttributes,
     });
+
+    await handlerInput.attributesManager.savePersistentAttributes();
+
+    return handlerInput.responseBuilder
+      .speak(speakOutput)
+      .reprompt(speakOutput)
+      .getResponse();
   }
 };

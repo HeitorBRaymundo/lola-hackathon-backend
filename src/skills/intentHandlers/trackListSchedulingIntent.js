@@ -9,6 +9,8 @@ export const TrackListSchedulingIntent = {
       && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AgendaIntent';
   },
   async handle(handlerInput) {
+    console.log('TrackListSchedulingIntent Triggered');
+
     const speakOutputInit = await getTextFromDB('Agenda');
 
     const appointments = await getSchedulesFromDB('appointments');

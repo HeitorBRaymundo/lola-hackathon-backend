@@ -9,6 +9,8 @@ export const TrackExerciseIntentHandler = {
       && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ExerciseIntent';
   },
   async handle(handlerInput) {
+    console.log('TrackExerciseIntentHandler Triggered');
+
     const randomIndex = randomInteger(0, 2);
 
     const exerciseQuestion1 = await getTextFromDB('exercicio 1');

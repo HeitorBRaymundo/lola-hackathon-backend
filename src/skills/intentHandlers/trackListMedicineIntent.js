@@ -9,6 +9,8 @@ export const TrackListMedicineIntent = {
       && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ListMedicineIntent';
   },
   async handle(handlerInput) {
+    console.log('TrackListMedicineIntent Triggered');
+
     const speakOutputInit = await getTextFromDB('remedios');
 
     const medicines = await getSchedulesFromDB('medicines');

@@ -4,13 +4,15 @@ import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
 
 export const TrackYesAnswerToExerciseHandler = {
   async canHandle(handlerInput) {
-    const { exerciseAsked } = await handlerInput.attributesManager.getPersistentAttributes();
+    const { exerciseAsked, firstIteraction } = await handlerInput.attributesManager.getPersistentAttributes();
 
-    return exerciseAsked 
+    return exerciseAsked && !firstIteraction
       && Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
       && Alexa.getIntentName(handlerInput.requestEnvelope) === 'YesIntent'
   },
   async handle(handlerInput) {
+    console.log('TrackYesAnswerToExerciseHandler Triggered');
+
     const speakOutput = await getTextFromDB('ok');
 
     return new Promise((resolve, reject) => {

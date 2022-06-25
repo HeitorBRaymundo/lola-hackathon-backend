@@ -13,6 +13,7 @@ export const TrackBadFeelingHandler = {
       );
   },
   async handle(handlerInput) {
+      console.log('TrackBadFeelingHandler Triggered');
       const speakOutput = await getTextFromDB('TrackBadFeeling');
 
       return handlerInput.responseBuilder

@@ -12,7 +12,7 @@ export const putRegister = async ({
   const { Items: result } = await DynamodDB.put({
     TableName: process.env.DYNAMODB_REGISTERS,
     Item: {
-      PK: id,
+      PK: `${id}`,
       SK: `${type}-${createdAt}`,
       createdAt, 
     },

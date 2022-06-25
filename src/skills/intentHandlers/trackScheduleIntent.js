@@ -8,6 +8,8 @@ export const TrackScheduleIntent = {
       && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ScheduleIntent';
   },
   async handle(handlerInput) {
+    console.log('TrackScheduleIntent Triggered');
+
     const speakOutput = await getTextFromDB('especialidade');
 
     return new Promise((resolve, reject) => {
