@@ -3,13 +3,10 @@ import * as Alexa from 'ask-sdk-core';
 import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
 import { randomInteger } from '../../utils/utils.js';
 
-export const TrackNoAnswerToExerciseHandler = {
-  async canHandle(handlerInput) {
-    const { exerciseAsked } = await handlerInput.attributesManager.getPersistentAttributes();
-
+export const TrackExerciseIntentHandler = {
+  canHandle(handlerInput) {
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'NoIntent' && exerciseAsked)
-      || Alexa.getIntentName(handlerInput.requestEnvelope) === 'ExerciseIntent';
+      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ExerciseIntent';
   },
   async handle(handlerInput) {
     const randomIndex = randomInteger(0, 2);

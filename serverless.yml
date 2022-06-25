@@ -13,6 +13,7 @@ provider:
       DYNAMODB_QUIZES_ANSWER: quizes-answer
       DYNAMODB_REMINDERS: reminders
       DYNAMODB_SCHEDULES: schedules
+      DYNAMODB_REGISTERS: registers
 
   iam:
     role:
@@ -126,6 +127,21 @@ resources:
           - AttributeName: PK
             KeyType: HASH
         TableName: schedules
+    Register:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        TableName: registers
 
 functions:
   get:
