@@ -32,7 +32,8 @@ export const insertAnswerToDB = async ({
     TableName: process.env.DYNAMODB_QUIZES_ANSWER,
     Item: {
       PK: `${userId}#${type}`,
-      SK: question,
+      SK: createdAt,
+      question,
       createdAt,
       type,
       answer,

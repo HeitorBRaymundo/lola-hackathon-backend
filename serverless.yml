@@ -191,7 +191,34 @@ functions:
     events:
       - httpApi:
           path: /quizes/{userId}/answer
+          method: post 
+
+  listEvents:
+    handler: src/components/events/listEvent.handler
+    events:
+      - http:
+          path: /events/{type}
+          method: get
+          cors:
+            origin: '*'
+
+  createEvent:
+    handler: src/components/events/createEvent.handler
+    events:
+      - http:
+          path: /events
           method: post
+          cors:
+            origin: '*'
+
+  listReports:
+    handler: src/components/reports/listReport.handler
+    events:
+      - http:
+          path: /reports/{userId}
+          method: get
+          cors:
+            origin: '*'
 
   mySkill:
     handler: src/skills/lola.handler
