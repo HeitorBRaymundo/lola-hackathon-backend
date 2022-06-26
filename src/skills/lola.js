@@ -21,6 +21,8 @@ import {
   TrackListMedicineIntent,
   TrackListSchedulingIntent,
   TrackRegisterExerciseIntentHandler,
+  TrackScheduleWithSpecialistHandler,
+  TrackChooseDateIntentHandler,
 } from './intentHandlers/index.js';
 import { getTextFromDB } from '../infrastructure/intentTextDB.js';
 
@@ -73,6 +75,8 @@ export const handler = Alexa.SkillBuilders.custom()
         TrackListMedicineIntent,
         TrackListSchedulingIntent,
         TrackRegisterExerciseIntentHandler,
+        TrackScheduleWithSpecialistHandler,
+        TrackChooseDateIntentHandler,
 
         HelpIntentHandler,
         CancelAndStopIntentHandler,

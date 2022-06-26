@@ -14,3 +14,5 @@ export { TrackScheduleIntent } from './trackScheduleIntent.js';
 export { TrackListMedicineIntent } from './trackListMedicineIntent.js';
 export { TrackListSchedulingIntent } from './trackListSchedulingIntent.js';
 export { TrackRegisterExerciseIntentHandler } from './trackRegisterExerciseIntent.js';
+export { TrackScheduleWithSpecialistHandler } from './trackScheduleWithSpecialistIntent.js';
+export { TrackChooseDateIntentHandler } from './trackScheduleDateIntent.js';
