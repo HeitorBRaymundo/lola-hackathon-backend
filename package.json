@@ -23,6 +23,7 @@
     "ask-sdk-dynamodb-persistence-adapter": "^2.12.1",
     "ask-sdk-model": "^1.38.2",
     "ask-sdk-s3-persistence-adapter": "^2.12.1",
-    "aws-sdk": "^2.1161.0"
+    "aws-sdk": "^2.1161.0",
+    "uuid": "^8.3.2"
   }
 }

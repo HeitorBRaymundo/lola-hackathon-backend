@@ -1,6 +1,7 @@
 import * as Alexa from 'ask-sdk-core';
 
 import { getTextFromDB } from '../../infrastructure/intentTextDB.js';
+import { insertScheduleToDB } from '../../infrastructure/schedulesDB.js';
 
 export const TrackChooseDateIntentHandler = {
   async canHandle(handlerInput) {
@@ -21,12 +22,12 @@ export const TrackChooseDateIntentHandler = {
     const dia = Alexa.getSlotValueV2(handlerInput.requestEnvelope, 'dia');
     const horario = Alexa.getSlotValueV2(handlerInput.requestEnvelope, 'horario');
 
-    console.log({
+    await insertScheduleToDB({
       specialist,
       data,
       dia,
-      horario
-    });
+      horario,
+    })
 
     const speakOutput = await getTextFromDB('ScheduleConfirm');
 
