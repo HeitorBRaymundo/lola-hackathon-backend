@@ -1,6 +1,8 @@
 import AWS from 'aws-sdk';
 import * as uuid from 'uuid';
 
+import { randomInteger } from '../utils/utils.js';
+
 const DynamodDB = new AWS.DynamoDB.DocumentClient();
 
 export const getSchedulesFromDB = async (type) => {
@@ -28,6 +30,15 @@ export const insertScheduleToDB = async ({
 }) => {
   const createdAt = new Date().toISOString();
 
+  const doctors = [
+    'Dra. Dulce',
+    'Dra. Fabi',
+    'Dra. Carla',
+    'Dr. Marco',
+  ];
+
+  const randomDoctor = randomInteger(0, 3);
+
   const content = data 
     ? `Agendado ${specialist.value} para o dia ${data.value} às ${horario.value}`
     : `Agendado ${specialist.value} para a próxima ${dia.value} às ${horario.value}` 
@@ -41,6 +52,7 @@ export const insertScheduleToDB = async ({
       type: 'appointments',
       status: 'scheduled',
       content: content,
+      doctor: doctors[randomDoctor],
     },
   }).promise();
 
