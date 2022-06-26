@@ -23,6 +23,12 @@ import {
   TrackRegisterExerciseIntentHandler,
   TrackScheduleWithSpecialistHandler,
   TrackChooseDateIntentHandler,
+  TrackStartQuizIntentHandler,
+  TrackQuiz1AnswerHandler,
+  TrackQuiz2AnswerHandler,
+  TrackQuiz3AnswerHandler,
+  TrackQuiz4AnswerHandler,
+  TrackQuiz5AnswerHandler,
 } from './intentHandlers/index.js';
 import { getTextFromDB } from '../infrastructure/intentTextDB.js';
 
@@ -77,6 +83,13 @@ export const handler = Alexa.SkillBuilders.custom()
         TrackRegisterExerciseIntentHandler,
         TrackScheduleWithSpecialistHandler,
         TrackChooseDateIntentHandler,
+
+        TrackStartQuizIntentHandler,
+        TrackQuiz1AnswerHandler,
+        TrackQuiz2AnswerHandler,
+        TrackQuiz3AnswerHandler,
+        TrackQuiz4AnswerHandler,
+        TrackQuiz5AnswerHandler,
 
         HelpIntentHandler,
         CancelAndStopIntentHandler,

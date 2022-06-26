@@ -15,7 +15,7 @@ export const TrackGoodFeelingHandler = {
   },
   async handle(handlerInput) {
     console.log('TrackGoodFeelingHandler Triggered');
-
+    
     const speakOutput = await getTextFromDB('Menu Ajuda');
 
     const customAttributes = {
